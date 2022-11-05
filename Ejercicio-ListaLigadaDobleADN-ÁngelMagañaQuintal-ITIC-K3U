@@ -1,0 +1,100 @@
+/**
+ * Este programa fue hecho en BlueJ.
+ * 
+ * @author (Ángel De Jesús Magaña Quintal ITIC K3U Asignatura: Estructura de datos) 
+ * @version (v1, 04/11/2022)
+ */
+import java.util.Scanner;
+import java.util.Random;
+
+public class ListaLigadaDoble{
+    class Nodo{
+        String elementoLista;
+        Nodo NodoAnterior;
+        Nodo NodoSiguiente;
+        
+        public Nodo(String elementoLista){
+            this.elementoLista = elementoLista;
+        }
+    }
+    
+    Nodo cabeza, cola = null;
+    
+    public void InsertarNodo(String elementoLista){
+        Nodo NodoPrincipal = new Nodo(elementoLista);
+        
+        if(cabeza == null){
+            cabeza = cola = NodoPrincipal;
+            cabeza.NodoAnterior = null;
+            cola.NodoSiguiente = null;
+        }else{
+            cola.NodoSiguiente = NodoPrincipal;
+            NodoPrincipal.NodoAnterior = cola;
+            cola = NodoPrincipal;
+            cola.NodoSiguiente = null;
+        }
+    }
+    
+    public void ImprimirNodos(){
+        Nodo current = cabeza;
+        if(cabeza == null){
+            System.out.println("Toda la lista está vacía");
+            return;
+        }
+        System.out.println("Estos son los nodos(datos) que están en la lista doble: ");
+        while(current != null){
+            System.out.println("Nodo: "+current.elementoLista + " ");
+            current = current.NodoSiguiente;
+        }
+    }
+    
+    public static void main(String[] args){
+        Scanner dato = new Scanner(System.in);
+        ListaLigadaDoble ListaDoblementeEnlazada = new ListaLigadaDoble();
+        int Opc=0;
+        String NodoDato;
+        
+        do{
+            System.out.print("\nMenu\n1.- Generar cadena aleatoria\n2.- Imprimir nodos de la lista\n3.- Salir\nIngrese una opción: "); 
+            Opc = dato.nextInt();
+            try{
+                switch(Opc){
+                    case 1:
+                        System.out.println();
+                        String caracteres = "ATCG";
+                        String cadenaAleatoria = "";
+                        int longitud = 23;
+                        
+                        Random aleatorio = new Random();
+                        
+                        char[] texto = new char[longitud];
+                        
+                        for(int i = 0; i < longitud; i++){
+                            texto[i] = caracteres.charAt(aleatorio.nextInt(caracteres.length()));
+                        }
+                        
+                        for(int i = 0; i < texto.length; i++){
+                            cadenaAleatoria += texto[i];
+                        }
+                        
+                        System.out.println("Cadena aleatoria de "+longitud+" caracteres: "+cadenaAleatoria);
+                        ListaDoblementeEnlazada.InsertarNodo(cadenaAleatoria);
+                        break;
+                    case 2:
+                        System.out.println("\nImprimiendo nodos de la lista.....");
+                        ListaDoblementeEnlazada.ImprimirNodos();
+                        System.out.println();
+                        break;
+                    case 3:
+                        System.out.println();
+                        System.out.println("Usted ha salido del programa");
+                        break;
+                    default:
+                        System.out.println("Opción invalida");
+                }
+            }catch(NumberFormatException n){
+                System.out.println("Entrada de datos no valida "+n);
+            }
+        }while(Opc != 3);
+    }
+}
